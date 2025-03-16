@@ -71,7 +71,7 @@ export class PostgresStorage implements IStorage {
       };
       
       const [createdRequest] = await db.insert(clientRequests)
-        .values(insertData)
+        .values([insertData])
         .returning();
       
       return createdRequest;
@@ -132,7 +132,7 @@ export class PostgresStorage implements IStorage {
       };
       
       const [createdListing] = await db.insert(propertyListings)
-        .values(insertData)
+        .values([insertData])
         .returning();
       
       return createdListing;
@@ -202,7 +202,7 @@ export class PostgresStorage implements IStorage {
       };
       
       const [createdListing] = await db.insert(agentClientListings)
-        .values(insertData)
+        .values([insertData])
         .returning();
       
       return createdListing;
