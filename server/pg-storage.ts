@@ -45,11 +45,31 @@ export class PostgresStorage implements IStorage {
   async createClientRequest(request: InsertClientRequest): Promise<ClientRequest> {
     try {
       // Insertar nueva solicitud de cliente
+      // Preparar los datos para insertar eliminando campos no existentes en el esquema
+      const insertData = {
+        propertyType: request.propertyType,
+        alcaldia: request.alcaldia,
+        colonia: request.colonia,
+        street: request.street || null,
+        bedrooms: request.bedrooms || null,
+        bathrooms: request.bathrooms || null,
+        minSize: request.minSize || null,
+        maxBudget: request.maxBudget || null,
+        features: request.features || null,
+        hasCredit: request.hasCredit,
+        creditType: request.creditType || null,
+        creditAmount: request.creditAmount || null,
+        needsFinancing: request.needsFinancing || null,
+        contactName: request.contactName,
+        contactPhone: request.contactPhone,
+        contactEmail: request.contactEmail,
+        contactTime: request.contactTime || null,
+        comments: request.comments || null,
+        createdAt: new Date().toISOString()
+      };
+      
       const [createdRequest] = await db.insert(clientRequests)
-        .values({
-          ...request,
-          createdAt: new Date().toISOString()
-        })
+        .values(insertData)
         .returning();
       
       return createdRequest;
@@ -88,11 +108,28 @@ export class PostgresStorage implements IStorage {
   async createPropertyListing(listing: InsertPropertyListing): Promise<PropertyListing> {
     try {
       // Insertar nuevo listado de propiedad
+      // Preparar los datos para insertar eliminando campos no existentes en el esquema
+      const insertData = {
+        propertyType: listing.propertyType,
+        transactionType: listing.transactionType,
+        price: listing.price,
+        size: listing.size,
+        alcaldia: listing.alcaldia,
+        colonia: listing.colonia,
+        street: listing.street || null,
+        bedrooms: listing.bedrooms || null,
+        bathrooms: listing.bathrooms || null,
+        features: listing.features || null,
+        agentName: listing.agentName,
+        agentPhone: listing.agentPhone,
+        agentEmail: listing.agentEmail,
+        agentCompany: listing.agentCompany || null,
+        comments: listing.comments || null,
+        createdAt: new Date().toISOString()
+      };
+      
       const [createdListing] = await db.insert(propertyListings)
-        .values({
-          ...listing,
-          createdAt: new Date().toISOString()
-        })
+        .values(insertData)
         .returning();
       
       return createdListing;
@@ -131,11 +168,37 @@ export class PostgresStorage implements IStorage {
   async createAgentClientListing(listing: InsertAgentClientListing): Promise<AgentClientListing> {
     try {
       // Insertar nuevo listado de agente-cliente
+      // Preparar los datos para insertar eliminando campos no existentes en el esquema
+      const insertData = {
+        propertyType: listing.propertyType,
+        transactionType: listing.transactionType,
+        price: listing.price,
+        size: listing.size,
+        alcaldia: listing.alcaldia,
+        colonia: listing.colonia,
+        street: listing.street || null,
+        bedrooms: listing.bedrooms || null,
+        bathrooms: listing.bathrooms || null,
+        features: listing.features || null,
+        // Información del agente
+        agentName: listing.agentName,
+        agentPhone: listing.agentPhone,
+        agentEmail: listing.agentEmail,
+        agentCompany: listing.agentCompany || null,
+        // Información del cliente
+        clientName: listing.clientName,
+        clientPhone: listing.clientPhone,
+        clientEmail: listing.clientEmail,
+        hasCredit: listing.hasCredit,
+        creditType: listing.creditType || null,
+        creditAmount: listing.creditAmount || null,
+        needsFinancing: listing.needsFinancing || null,
+        comments: listing.comments || null,
+        createdAt: new Date().toISOString()
+      };
+      
       const [createdListing] = await db.insert(agentClientListings)
-        .values({
-          ...listing,
-          createdAt: new Date().toISOString()
-        })
+        .values(insertData)
         .returning();
       
       return createdListing;
