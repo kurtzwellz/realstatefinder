@@ -7,6 +7,16 @@ import {
   type InsertAgentClientListing
 } from "@shared/schema";
 
+// Re-exportar los tipos para que estén disponibles en archivos que importen storage.ts
+export type {
+  ClientRequest,
+  InsertClientRequest,
+  PropertyListing,
+  InsertPropertyListing,
+  AgentClientListing,
+  InsertAgentClientListing
+};
+
 export interface IStorage {
   // Client requests (property search)
   getClientRequests(): Promise<ClientRequest[]>;

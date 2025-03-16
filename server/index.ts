@@ -1,6 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { initializeDatabase } from "./db";
+import { initializeAdmin } from "./auth";
+import * as dotenv from "dotenv";
 
 const app = express();
 app.use(express.json());
@@ -36,7 +39,21 @@ app.use((req, res, next) => {
   next();
 });
 
+// Cargar variables de entorno
+dotenv.config();
+
 (async () => {
+  // Inicializar la base de datos
+  const dbInitialized = await initializeDatabase();
+  
+  if (dbInitialized && process.env.DATABASE_URL) {
+    // Inicializar administrador solo si la base de datos está disponible
+    await initializeAdmin();
+    console.log('Sistema de administración inicializado correctamente');
+  } else {
+    console.log('Utilizando almacenamiento en memoria');
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
