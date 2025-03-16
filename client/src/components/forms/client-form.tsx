@@ -133,46 +133,52 @@ export default function ClientForm() {
                           >
                             <FormItem className="flex flex-col space-y-0">
                               <FormControl>
-                                <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200 cursor-pointer">
-                                  <RadioGroupItem value="casa" id="casa" />
-                                  <div className="flex items-center">
-                                    <Home className="text-primary mr-3 h-5 w-5" />
-                                    <div>
-                                      <FormLabel className="font-semibold" htmlFor="casa">Casa</FormLabel>
-                                      <p className="text-sm text-muted-foreground">Residencia independiente</p>
+                                <label htmlFor="casa" className="cursor-pointer block w-full">
+                                  <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <RadioGroupItem value="casa" id="casa" />
+                                    <div className="flex items-center">
+                                      <Home className="text-primary mr-3 h-5 w-5" />
+                                      <div>
+                                        <FormLabel className="font-semibold" htmlFor="casa">Casa</FormLabel>
+                                        <p className="text-sm text-muted-foreground">Residencia independiente</p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                </label>
                               </FormControl>
                             </FormItem>
                             
                             <FormItem className="flex flex-col space-y-0">
                               <FormControl>
-                                <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200 cursor-pointer">
-                                  <RadioGroupItem value="departamento" id="departamento" />
-                                  <div className="flex items-center">
-                                    <Building className="text-primary mr-3 h-5 w-5" />
-                                    <div>
-                                      <FormLabel className="font-semibold" htmlFor="departamento">Departamento</FormLabel>
-                                      <p className="text-sm text-muted-foreground">Unidad en edificio</p>
+                                <label htmlFor="departamento" className="cursor-pointer block w-full">
+                                  <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <RadioGroupItem value="departamento" id="departamento" />
+                                    <div className="flex items-center">
+                                      <Building className="text-primary mr-3 h-5 w-5" />
+                                      <div>
+                                        <FormLabel className="font-semibold" htmlFor="departamento">Departamento</FormLabel>
+                                        <p className="text-sm text-muted-foreground">Unidad en edificio</p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                </label>
                               </FormControl>
                             </FormItem>
                             
                             <FormItem className="flex flex-col space-y-0">
                               <FormControl>
-                                <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200 cursor-pointer">
-                                  <RadioGroupItem value="terreno" id="terreno" />
-                                  <div className="flex items-center">
-                                    <Map className="text-primary mr-3 h-5 w-5" />
-                                    <div>
-                                      <FormLabel className="font-semibold" htmlFor="terreno">Terreno</FormLabel>
-                                      <p className="text-sm text-muted-foreground">Lote sin construcción</p>
+                                <label htmlFor="terreno" className="cursor-pointer block w-full">
+                                  <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <RadioGroupItem value="terreno" id="terreno" />
+                                    <div className="flex items-center">
+                                      <Map className="text-primary mr-3 h-5 w-5" />
+                                      <div>
+                                        <FormLabel className="font-semibold" htmlFor="terreno">Terreno</FormLabel>
+                                        <p className="text-sm text-muted-foreground">Lote sin construcción</p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                </label>
                               </FormControl>
                             </FormItem>
                             
