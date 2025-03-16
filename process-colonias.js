@@ -83,9 +83,12 @@ async function processColonias() {
       
       if (jsonData.results && Array.isArray(jsonData.results)) {
         for (const record of jsonData.results) {
-          if (record.mun_name && record.col_name) {
-            const municipio = record.mun_name;
-            const colonia = record.col_name;
+          if (record.mun_name && Array.isArray(record.mun_name) && 
+              record.col_name && Array.isArray(record.col_name)) {
+            
+            // Extraer el primer valor de los arrays mun_name y col_name
+            const municipio = record.mun_name[0];
+            const colonia = record.col_name[0];
             
             // Si el municipio existe en nuestro mapeo
             if (municipioToAlcaldia[municipio]) {
