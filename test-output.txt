@@ -1,0 +1,127 @@
+Conectado a la base de datos PostgreSQL
+
+=== Estructura de las tablas ===
+
+Estructura de la tabla client_requests:
+┌─────────┬───────────────────┬───────────────────────────────┐
+│ (index) │ column_name       │ data_type                     │
+├─────────┼───────────────────┼───────────────────────────────┤
+│ 0       │ 'id'              │ 'integer'                     │
+│ 1       │ 'property_type'   │ 'character varying'           │
+│ 2       │ 'alcaldia'        │ 'character varying'           │
+│ 3       │ 'colonia'         │ 'character varying'           │
+│ 4       │ 'street'          │ 'character varying'           │
+│ 5       │ 'bedrooms'        │ 'character varying'           │
+│ 6       │ 'bathrooms'       │ 'character varying'           │
+│ 7       │ 'min_size'        │ 'integer'                     │
+│ 8       │ 'max_budget'      │ 'integer'                     │
+│ 9       │ 'has_credit'      │ 'boolean'                     │
+│ 10      │ 'credit_type'     │ 'character varying'           │
+│ 11      │ 'credit_amount'   │ 'integer'                     │
+│ 12      │ 'needs_financing' │ 'boolean'                     │
+│ 13      │ 'contact_name'    │ 'character varying'           │
+│ 14      │ 'contact_phone'   │ 'character varying'           │
+│ 15      │ 'contact_email'   │ 'character varying'           │
+│ 16      │ 'contact_time'    │ 'character varying'           │
+│ 17      │ 'comments'        │ 'text'                        │
+│ 18      │ 'created_at'      │ 'timestamp without time zone' │
+│ 19      │ 'features'        │ 'jsonb'                       │
+└─────────┴───────────────────┴───────────────────────────────┘
+
+Estructura de la tabla property_listings:
+┌─────────┬────────────────────┬───────────────────────────────┐
+│ (index) │ column_name        │ data_type                     │
+├─────────┼────────────────────┼───────────────────────────────┤
+│ 0       │ 'id'               │ 'integer'                     │
+│ 1       │ 'property_type'    │ 'character varying'           │
+│ 2       │ 'transaction_type' │ 'character varying'           │
+│ 3       │ 'price'            │ 'integer'                     │
+│ 4       │ 'size'             │ 'integer'                     │
+│ 5       │ 'alcaldia'         │ 'character varying'           │
+│ 6       │ 'colonia'          │ 'character varying'           │
+│ 7       │ 'street'           │ 'character varying'           │
+│ 8       │ 'bedrooms'         │ 'character varying'           │
+│ 9       │ 'bathrooms'        │ 'character varying'           │
+│ 10      │ 'agent_name'       │ 'character varying'           │
+│ 11      │ 'agent_phone'      │ 'character varying'           │
+│ 12      │ 'agent_email'      │ 'character varying'           │
+│ 13      │ 'agent_company'    │ 'character varying'           │
+│ 14      │ 'comments'         │ 'text'                        │
+│ 15      │ 'created_at'       │ 'timestamp without time zone' │
+│ 16      │ 'features'         │ 'jsonb'                       │
+└─────────┴────────────────────┴───────────────────────────────┘
+
+Estructura de la tabla agent_client_listings:
+┌─────────┬────────────────────┬───────────────────────────────┐
+│ (index) │ column_name        │ data_type                     │
+├─────────┼────────────────────┼───────────────────────────────┤
+│ 0       │ 'id'               │ 'integer'                     │
+│ 1       │ 'property_type'    │ 'character varying'           │
+│ 2       │ 'transaction_type' │ 'character varying'           │
+│ 3       │ 'price'            │ 'integer'                     │
+│ 4       │ 'size'             │ 'integer'                     │
+│ 5       │ 'alcaldia'         │ 'character varying'           │
+│ 6       │ 'colonia'          │ 'character varying'           │
+│ 7       │ 'street'           │ 'character varying'           │
+│ 8       │ 'bedrooms'         │ 'character varying'           │
+│ 9       │ 'bathrooms'        │ 'character varying'           │
+│ 10      │ 'agent_name'       │ 'character varying'           │
+│ 11      │ 'agent_phone'      │ 'character varying'           │
+│ 12      │ 'agent_email'      │ 'character varying'           │
+│ 13      │ 'agent_company'    │ 'character varying'           │
+│ 14      │ 'client_name'      │ 'character varying'           │
+│ 15      │ 'client_phone'     │ 'character varying'           │
+│ 16      │ 'client_email'     │ 'character varying'           │
+│ 17      │ 'has_credit'       │ 'boolean'                     │
+│ 18      │ 'credit_type'      │ 'character varying'           │
+│ 19      │ 'credit_amount'    │ 'integer'                     │
+│ 20      │ 'needs_financing'  │ 'boolean'                     │
+│ 21      │ 'comments'         │ 'text'                        │
+│ 22      │ 'created_at'       │ 'timestamp without time zone' │
+│ 23      │ 'features'         │ 'jsonb'                       │
+└─────────┴────────────────────┴───────────────────────────────┘
+
+=== Prueba de inserción con JSONB ===
+Insertando datos de prueba en client_requests...
+Registro insertado con ID: 2
+Features guardados: [ 'Estacionamiento', 'Jardín', 'Seguridad 24 horas' ]
+Tipo de features: object
+
+Recuperando el registro insertado...
+Registro recuperado:
+{
+  id: 2,
+  property_type: 'Casa',
+  alcaldia: 'Miguel Hidalgo',
+  colonia: 'Polanco',
+  street: null,
+  bedrooms: '3',
+  bathrooms: '2',
+  min_size: null,
+  max_budget: null,
+  has_credit: true,
+  credit_type: null,
+  credit_amount: null,
+  needs_financing: null,
+  contact_name: 'Usuario Prueba',
+  contact_phone: '5555555555',
+  contact_email: 'test@example.com',
+  contact_time: null,
+  comments: null,
+  created_at: 2025-03-16T20:41:38.131Z,
+  features: [ 'Estacionamiento', 'Jardín', 'Seguridad 24 horas' ]
+}
+
+=== Prueba de operaciones con JSONB ===
+Buscando propiedades con "Jardín" en features:
+Resultados encontrados: 1
+┌─────────┬────┬───────────────┬───────────────────────────────────────────────────────┐
+│ (index) │ id │ property_type │ features                                              │
+├─────────┼────┼───────────────┼───────────────────────────────────────────────────────┤
+│ 0       │ 2  │ 'Casa'        │ [ 'Estacionamiento', 'Jardín', 'Seguridad 24 horas' ] │
+└─────────┴────┴───────────────┴───────────────────────────────────────────────────────┘
+
+Eliminando registro de prueba...
+Registro eliminado correctamente
+
+Conexión a la base de datos cerrada
