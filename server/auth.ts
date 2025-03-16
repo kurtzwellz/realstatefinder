@@ -2,6 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import * as bcrypt from 'bcryptjs';
 import { db } from './db';
 import { sql } from 'drizzle-orm';
+import { Session } from 'express-session';
+
+// Extender Session para incluir nuestras propiedades
+declare module 'express-session' {
+  interface Session {
+    isAuthenticated?: boolean;
+    username?: string;
+  }
+}
 
 // Definir interfaz para usuario administrador
 interface AdminUser {
@@ -27,7 +36,8 @@ export async function initializeAdmin() {
       );
     `);
     
-    const exists = tableExists.rows[0]?.exists === true;
+    // En postgres.js, el resultado directo contiene los datos
+    const exists = tableExists[0]?.exists === true;
     
     if (!exists) {
       // Crear tabla de administradores si no existe
@@ -46,7 +56,7 @@ export async function initializeAdmin() {
       SELECT * FROM admin_users LIMIT 1;
     `);
     
-    if (adminUsers.rows.length === 0) {
+    if (!adminUsers || adminUsers.length === 0) {
       // Crear usuario por defecto si no existe ninguno
       const defaultUsername = 'admin';
       const defaultPassword = 'admin123'; // En producción debe ser más seguro
@@ -64,10 +74,21 @@ export async function initializeAdmin() {
         SELECT * FROM admin_users WHERE username = ${defaultUsername};
       `);
       
-      adminUser = newAdmin.rows[0] as AdminUser;
+      // Conversión segura para el usuario administrador
+      const newAdminData = newAdmin[0] as Record<string, unknown>;
+      adminUser = {
+        id: Number(newAdminData.id),
+        username: String(newAdminData.username),
+        password_hash: String(newAdminData.password_hash)
+      };
     } else {
-      // Guardar usuario existente en memoria
-      adminUser = adminUsers.rows[0] as AdminUser;
+      // Guardar usuario existente en memoria con conversión segura
+      const existingAdminData = adminUsers[0] as Record<string, unknown>;
+      adminUser = {
+        id: Number(existingAdminData.id),
+        username: String(existingAdminData.username),
+        password_hash: String(existingAdminData.password_hash)
+      };
     }
     
     console.log('Autenticación de administrador inicializada');
@@ -97,11 +118,17 @@ export async function verifyCredentials(username: string, password: string): Pro
       SELECT * FROM admin_users WHERE username = ${username};
     `);
     
-    if (users.rows.length === 0) {
+    if (!users || users.length === 0) {
       return false;
     }
     
-    const user = users.rows[0] as AdminUser;
+    // Conversión segura para el usuario
+    const userData = users[0] as Record<string, unknown>;
+    const user: AdminUser = {
+      id: Number(userData.id),
+      username: String(userData.username),
+      password_hash: String(userData.password_hash)
+    };
     
     // Verificar contraseña
     const isValid = await bcrypt.compare(password, user.password_hash);
