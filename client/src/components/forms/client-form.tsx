@@ -48,12 +48,12 @@ export default function ClientForm() {
       street: "",
       bedrooms: "",
       bathrooms: "",
-      minSize: 0,
-      maxBudget: 0,
+      minSize: null,
+      maxBudget: null,
       features: [],
       hasCredit: false,
       creditType: "",
-      creditAmount: 0,
+      creditAmount: null,
       needsFinancing: false,
       contactName: "",
       contactPhone: "",
@@ -61,7 +61,8 @@ export default function ClientForm() {
       contactTime: "",
       comments: "",
       acceptPrivacyPolicy: false
-    }
+    },
+    mode: "onSubmit" // Cambiado a onSubmit para que valide solo cuando se hace submit
   });
   
   // Watch values for conditional rendering
@@ -89,14 +90,49 @@ export default function ClientForm() {
     }
   });
   
-  const onSubmit = (values: any) => {
-    // If not on the last step, move to the next step
+  // Validación específica para cada paso
+  const validateStep = async () => {
+    let fieldsToValidate: string[] = [];
+    
+    // Determinar los campos a validar según el paso actual
+    switch (step) {
+      case 1:
+        fieldsToValidate = ["propertyType"];
+        break;
+      case 2:
+        fieldsToValidate = ["alcaldia", "colonia"];
+        break;
+      case 3:
+        fieldsToValidate = []; // En este paso todos son opcionales
+        break;
+      case 4:
+        if (form.getValues("hasCredit")) {
+          fieldsToValidate = ["creditType", "creditAmount"];
+        }
+        break;
+      case 5:
+        fieldsToValidate = ["contactName", "contactPhone", "contactEmail", "acceptPrivacyPolicy"];
+        break;
+      default:
+        break;
+    }
+    
+    // Validamos solo los campos necesarios para el paso actual
+    const result = await form.trigger(fieldsToValidate);
+    return result;
+  };
+
+  const onSubmit = async (values: any) => {
+    // Si no estamos en el último paso, validamos solo el paso actual y avanzamos
     if (step < 5) {
-      setStep(prev => prev + 1);
+      const isStepValid = await validateStep();
+      if (isStepValid) {
+        setStep(prev => prev + 1);
+      }
       return;
     }
     
-    // On the final step, submit the form
+    // En el último paso, enviamos el formulario completo
     clientRequestMutation.mutate(values);
   };
   

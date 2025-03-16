@@ -9,15 +9,15 @@ export const clientFormSchema = z.object({
   street: z.string().optional(),
   bedrooms: z.string().optional(),
   bathrooms: z.string().optional(),
-  minSize: z.number().min(0, "Debe ser un número positivo").optional(),
-  maxBudget: z.number().min(0, "Debe ser un número positivo").optional(),
+  minSize: z.number().min(0, "Debe ser un número positivo").optional().nullable(),
+  maxBudget: z.number().min(0, "Debe ser un número positivo").optional().nullable(),
   features: z.array(z.string()).optional().default([]),
   
   // Credit Information
-  hasCredit: z.boolean(),
+  hasCredit: z.boolean().default(false),
   creditType: z.string().optional(),
-  creditAmount: z.number().min(0, "Debe ser un número positivo").optional(),
-  needsFinancing: z.boolean().optional(),
+  creditAmount: z.number().min(0, "Debe ser un número positivo").optional().nullable(),
+  needsFinancing: z.boolean().optional().default(false),
   
   // Contact Information
   contactName: z.string().min(1, "Nombre es requerido"),
@@ -25,22 +25,38 @@ export const clientFormSchema = z.object({
   contactEmail: z.string().email("Correo electrónico válido es requerido"),
   contactTime: z.string().optional(),
   comments: z.string().optional(),
-  acceptPrivacyPolicy: z.boolean().refine(val => val === true, {
-    message: "Debe aceptar la política de privacidad"
-  })
-}).refine(
-  (data) => {
-    // If user has credit, creditType and creditAmount are required
-    if (data.hasCredit) {
-      return !!data.creditType && data.creditAmount && data.creditAmount > 0;
+  acceptPrivacyPolicy: z.boolean().default(false)
+}).superRefine((data, ctx) => {
+  // Si estamos en la validación del paso final o de la sección de crédito, 
+  // verificamos las reglas específicas
+  
+  // Regla para cuando el usuario tiene crédito
+  if (data.hasCredit) {
+    if (!data.creditType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Debe especificar el tipo de crédito",
+        path: ["creditType"]
+      });
     }
-    return true;
-  },
-  {
-    message: "Si tiene un crédito, debe especificar el tipo y monto",
-    path: ["creditType", "creditAmount"]
+    if (!data.creditAmount || data.creditAmount <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Debe especificar un monto de crédito válido",
+        path: ["creditAmount"]
+      });
+    }
   }
-);
+  
+  // Regla para la política de privacidad
+  if (data.contactName && data.contactPhone && data.contactEmail && !data.acceptPrivacyPolicy) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Debe aceptar la política de privacidad",
+      path: ["acceptPrivacyPolicy"]
+    });
+  }
+});
 
 // Agent Form schema
 export const agentFormSchema = z.object({
