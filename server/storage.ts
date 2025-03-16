@@ -117,4 +117,9 @@ export class MemStorage implements IStorage {
   }
 }
 
+// Importar PostgresStorage para que pueda ser utilizado por routes.ts
+import { PostgresStorage } from './pg-storage';
+
+// La implementación del storage ahora se determina en routes.ts
+// basada en la disponibilidad de la base de datos
 export const storage = new MemStorage();
