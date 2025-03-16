@@ -46,6 +46,7 @@ export class PostgresStorage implements IStorage {
     try {
       // Insertar nueva solicitud de cliente
       // Preparar los datos para insertar eliminando campos no existentes en el esquema
+      // Verificar que los datos de array sean procesados correctamente como JSON
       const insertData = {
         propertyType: request.propertyType,
         alcaldia: request.alcaldia,
@@ -55,7 +56,8 @@ export class PostgresStorage implements IStorage {
         bathrooms: request.bathrooms || null,
         minSize: request.minSize || null,
         maxBudget: request.maxBudget || null,
-        features: request.features || null,
+        // Asegurarnos de que features sea un objeto JSON válido
+        features: request.features ? JSON.stringify(request.features) : null,
         hasCredit: request.hasCredit,
         creditType: request.creditType || null,
         creditAmount: request.creditAmount || null,
@@ -119,7 +121,8 @@ export class PostgresStorage implements IStorage {
         street: listing.street || null,
         bedrooms: listing.bedrooms || null,
         bathrooms: listing.bathrooms || null,
-        features: listing.features || null,
+        // Asegurarnos de que features sea un objeto JSON válido
+        features: listing.features ? JSON.stringify(listing.features) : null,
         agentName: listing.agentName,
         agentPhone: listing.agentPhone,
         agentEmail: listing.agentEmail,
@@ -179,7 +182,8 @@ export class PostgresStorage implements IStorage {
         street: listing.street || null,
         bedrooms: listing.bedrooms || null,
         bathrooms: listing.bathrooms || null,
-        features: listing.features || null,
+        // Asegurarnos de que features sea un objeto JSON válido
+        features: listing.features ? JSON.stringify(listing.features) : null,
         // Información del agente
         agentName: listing.agentName,
         agentPhone: listing.agentPhone,
