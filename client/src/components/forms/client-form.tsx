@@ -184,16 +184,18 @@ export default function ClientForm() {
                             
                             <FormItem className="flex flex-col space-y-0">
                               <FormControl>
-                                <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200 cursor-pointer">
-                                  <RadioGroupItem value="comercial" id="comercial" />
-                                  <div className="flex items-center">
-                                    <Store className="text-primary mr-3 h-5 w-5" />
-                                    <div>
-                                      <FormLabel className="font-semibold" htmlFor="comercial">Local Comercial</FormLabel>
-                                      <p className="text-sm text-muted-foreground">Espacio para negocio</p>
+                                <label htmlFor="comercial" className="cursor-pointer block w-full">
+                                  <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                    <RadioGroupItem value="comercial" id="comercial" />
+                                    <div className="flex items-center">
+                                      <Store className="text-primary mr-3 h-5 w-5" />
+                                      <div>
+                                        <FormLabel className="font-semibold" htmlFor="comercial">Local Comercial</FormLabel>
+                                        <p className="text-sm text-muted-foreground">Espacio para negocio</p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                </label>
                               </FormControl>
                             </FormItem>
                           </RadioGroup>
@@ -361,7 +363,14 @@ export default function ClientForm() {
                               type="number" 
                               placeholder="Ej: 80" 
                               {...field}
-                              onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                              onChange={(e) => {
+                                // Si el campo está vacío, no asignar un valor (será undefined)
+                                if (e.target.value === '') {
+                                  field.onChange(undefined);
+                                } else {
+                                  field.onChange(e.target.valueAsNumber);
+                                }
+                              }}
                             />
                           </FormControl>
                           <FormMessage />
@@ -380,7 +389,14 @@ export default function ClientForm() {
                               type="number" 
                               placeholder="Ej: 3,000,000" 
                               {...field}
-                              onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                              onChange={(e) => {
+                                // Si el campo está vacío, no asignar un valor (será undefined)
+                                if (e.target.value === '') {
+                                  field.onChange(undefined);
+                                } else {
+                                  field.onChange(e.target.valueAsNumber);
+                                }
+                              }}
                             />
                           </FormControl>
                           <FormMessage />
@@ -469,29 +485,33 @@ export default function ClientForm() {
                             >
                               <FormItem className="flex flex-col space-y-0">
                                 <FormControl>
-                                  <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200 cursor-pointer">
-                                    <RadioGroupItem value="true" id="credit-yes" />
-                                    <div className="flex items-center">
-                                      <div className="text-green-500 mr-3">✓</div>
-                                      <FormLabel className="font-semibold" htmlFor="credit-yes">
-                                        Sí, ya tengo un crédito
-                                      </FormLabel>
+                                  <label htmlFor="credit-yes" className="cursor-pointer block w-full">
+                                    <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                      <RadioGroupItem value="true" id="credit-yes" />
+                                      <div className="flex items-center">
+                                        <div className="text-green-500 mr-3">✓</div>
+                                        <FormLabel className="font-semibold" htmlFor="credit-yes">
+                                          Sí, ya tengo un crédito
+                                        </FormLabel>
+                                      </div>
                                     </div>
-                                  </div>
+                                  </label>
                                 </FormControl>
                               </FormItem>
                               
                               <FormItem className="flex flex-col space-y-0">
                                 <FormControl>
-                                  <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200 cursor-pointer">
-                                    <RadioGroupItem value="false" id="credit-no" />
-                                    <div className="flex items-center">
-                                      <div className="text-red-500 mr-3">✕</div>
-                                      <FormLabel className="font-semibold" htmlFor="credit-no">
-                                        No, necesito financiamiento
-                                      </FormLabel>
+                                  <label htmlFor="credit-no" className="cursor-pointer block w-full">
+                                    <div className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 rounded-lg p-4 border border-gray-200">
+                                      <RadioGroupItem value="false" id="credit-no" />
+                                      <div className="flex items-center">
+                                        <div className="text-red-500 mr-3">✕</div>
+                                        <FormLabel className="font-semibold" htmlFor="credit-no">
+                                          No, necesito financiamiento
+                                        </FormLabel>
+                                      </div>
                                     </div>
-                                  </div>
+                                  </label>
                                 </FormControl>
                               </FormItem>
                             </RadioGroup>
@@ -544,7 +564,14 @@ export default function ClientForm() {
                                 type="number" 
                                 placeholder="Ej: 2,000,000" 
                                 {...field}
-                                onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                onChange={(e) => {
+                                  // Si el campo está vacío, no asignar un valor (será undefined)
+                                  if (e.target.value === '') {
+                                    field.onChange(undefined);
+                                  } else {
+                                    field.onChange(e.target.valueAsNumber);
+                                  }
+                                }}
                               />
                             </FormControl>
                             <FormMessage />
