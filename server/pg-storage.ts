@@ -56,8 +56,8 @@ export class PostgresStorage implements IStorage {
         bathrooms: request.bathrooms || null,
         minSize: request.minSize || null,
         maxBudget: request.maxBudget || null,
-        // Asegurarnos de que features sea un objeto JSON válido
-        features: request.features ? JSON.stringify(request.features) : null,
+        // Pasar el array directamente para que Drizzle lo maneje como JSONB
+        features: request.features || null,
         hasCredit: request.hasCredit,
         creditType: request.creditType || null,
         creditAmount: request.creditAmount || null,
@@ -121,8 +121,8 @@ export class PostgresStorage implements IStorage {
         street: listing.street || null,
         bedrooms: listing.bedrooms || null,
         bathrooms: listing.bathrooms || null,
-        // Asegurarnos de que features sea un objeto JSON válido
-        features: listing.features ? JSON.stringify(listing.features) : null,
+        // Pasar el array directamente para que Drizzle lo maneje como JSONB
+        features: listing.features || null,
         agentName: listing.agentName,
         agentPhone: listing.agentPhone,
         agentEmail: listing.agentEmail,
@@ -182,8 +182,8 @@ export class PostgresStorage implements IStorage {
         street: listing.street || null,
         bedrooms: listing.bedrooms || null,
         bathrooms: listing.bathrooms || null,
-        // Asegurarnos de que features sea un objeto JSON válido
-        features: listing.features ? JSON.stringify(listing.features) : null,
+        // Pasar el array directamente para que Drizzle lo maneje como JSONB
+        features: listing.features || null,
         // Información del agente
         agentName: listing.agentName,
         agentPhone: listing.agentPhone,

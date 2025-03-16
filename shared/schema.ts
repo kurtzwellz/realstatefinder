@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, json } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -25,7 +25,7 @@ export const clientRequests = pgTable("client_requests", {
   bathrooms: text("bathrooms"),
   minSize: integer("min_size"),
   maxBudget: integer("max_budget"),
-  features: json("features").$type<string[]>(),
+  features: jsonb("features").$type<string[]>(),
   hasCredit: boolean("has_credit").notNull(),
   creditType: text("credit_type"),
   creditAmount: integer("credit_amount"),
@@ -50,7 +50,7 @@ export const propertyListings = pgTable("property_listings", {
   street: text("street"),
   bedrooms: text("bedrooms"),
   bathrooms: text("bathrooms"),
-  features: json("features").$type<string[]>(),
+  features: jsonb("features").$type<string[]>(),
   agentName: text("agent_name").notNull(),
   agentPhone: text("agent_phone").notNull(),
   agentEmail: text("agent_email").notNull(),
@@ -72,7 +72,7 @@ export const agentClientListings = pgTable("agent_client_listings", {
   street: text("street"),
   bedrooms: text("bedrooms"),
   bathrooms: text("bathrooms"),
-  features: json("features").$type<string[]>(),
+  features: jsonb("features").$type<string[]>(),
   // Agent information
   agentName: text("agent_name").notNull(),
   agentPhone: text("agent_phone").notNull(),
