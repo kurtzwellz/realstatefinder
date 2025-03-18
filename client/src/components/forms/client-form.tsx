@@ -92,8 +92,26 @@ export default function ClientForm() {
   });
 
   const onSubmit = async (values: any) => {
-    // Enviamos el formulario completo
-    clientRequestMutation.mutate(values);
+    // Preparar los datos antes de enviarlos
+    const formData = {
+      ...values,
+      // Asegurar que los campos numéricos sean números o null
+      minSize: values.minSize === "" ? null : Number(values.minSize),
+      maxBudget: values.maxBudget === "" ? null : Number(values.maxBudget),
+      creditAmount: values.creditAmount === "" ? null : Number(values.creditAmount),
+      // Asegurar que los campos opcionales sean strings vacíos o null
+      street: values.street || null,
+      bedrooms: values.bedrooms || null,
+      bathrooms: values.bathrooms || null,
+      creditType: values.hasCredit ? values.creditType : null,
+      contactTime: values.contactTime || null,
+      comments: values.comments || null,
+      // Asegurar que features es siempre un array
+      features: Array.isArray(values.features) ? values.features : []
+    };
+    
+    // Enviamos el formulario con los datos preparados
+    clientRequestMutation.mutate(formData);
   };
   
   return (

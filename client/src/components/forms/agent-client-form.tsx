@@ -97,19 +97,26 @@ export default function AgentClientForm() {
   });
 
   const onSubmit = async (values: any) => {
-    // Aseguramos que los valores numéricos sean números
-    if (values.price) {
-      values.price = parseInt(values.price);
-    }
-    if (values.size) {
-      values.size = parseInt(values.size);
-    }
-    if (values.creditAmount) {
-      values.creditAmount = parseInt(values.creditAmount);
-    }
+    // Preparar los datos antes de enviarlos
+    const formData = {
+      ...values,
+      // Asegurar que los campos numéricos sean números
+      price: values.price === "" ? 0 : Number(values.price),
+      size: values.size === "" ? 0 : Number(values.size),
+      creditAmount: values.creditAmount === "" ? null : Number(values.creditAmount),
+      // Asegurar que los campos opcionales sean strings vacíos o null
+      street: values.street || null,
+      bedrooms: values.bedrooms || null,
+      bathrooms: values.bathrooms || null,
+      agentCompany: values.agentCompany || null,
+      creditType: values.hasCredit ? values.creditType : null,
+      comments: values.comments || null,
+      // Asegurar que features es siempre un array
+      features: Array.isArray(values.features) ? values.features : []
+    };
     
-    // Enviamos el formulario completo
-    agentClientListingMutation.mutate(values);
+    // Enviamos el formulario con los datos preparados
+    agentClientListingMutation.mutate(formData);
   };
   
   return (

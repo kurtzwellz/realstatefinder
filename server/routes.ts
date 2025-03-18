@@ -51,11 +51,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Validation error handler
   const validateRequest = (schema: any, data: any) => {
     try {
+      // Intentar validar los datos con el esquema
       return schema.parse(data);
     } catch (error) {
       if (error instanceof ZodError) {
+        // Convertir el error de Zod en un mensaje más amigable
         const validationError = fromZodError(error);
-        throw new Error(validationError.message);
+        console.error('Error de validación:', validationError);
+        
+        // Si hay múltiples errores, incluir todos en el mensaje
+        if (validationError.details.length > 1) {
+          const errorMessages = validationError.details.map(detail => detail.message).join('; ');
+          throw new Error(`Errores de validación: ${errorMessages}`);
+        } else {
+          throw new Error(validationError.message);
+        }
       }
       throw error;
     }

@@ -87,16 +87,24 @@ export default function AgentForm() {
   });
 
   const onSubmit = async (values: any) => {
-    // Aseguramos que los valores numéricos sean números
-    if (values.price) {
-      values.price = parseInt(values.price);
-    }
-    if (values.size) {
-      values.size = parseInt(values.size);
-    }
+    // Preparar los datos antes de enviarlos
+    const formData = {
+      ...values,
+      // Asegurar que los campos numéricos sean números
+      price: values.price === "" ? 0 : Number(values.price),
+      size: values.size === "" ? 0 : Number(values.size),
+      // Asegurar que los campos opcionales sean strings vacíos o null
+      street: values.street || null,
+      bedrooms: values.bedrooms || null,
+      bathrooms: values.bathrooms || null,
+      agentCompany: values.agentCompany || null,
+      comments: values.comments || null,
+      // Asegurar que features es siempre un array
+      features: Array.isArray(values.features) ? values.features : []
+    };
     
-    // Enviamos el formulario completo
-    propertyListingMutation.mutate(values);
+    // Enviamos el formulario con los datos preparados
+    propertyListingMutation.mutate(formData);
   };
   
   return (

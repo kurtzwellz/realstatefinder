@@ -65,11 +65,31 @@ export class MemStorage implements IStorage {
   async createClientRequest(request: InsertClientRequest): Promise<ClientRequest> {
     const id = this.clientRequestId++;
     const timestamp = new Date().toISOString();
+    
+    // Asegurarnos de que los campos opcionales tengan valores consistentes
     const clientRequest: ClientRequest = { 
-      ...request, 
-      id, 
-      createdAt: timestamp 
+      id,
+      propertyType: request.propertyType,
+      alcaldia: request.alcaldia,
+      colonia: request.colonia,
+      street: request.street || null,
+      bedrooms: request.bedrooms || null,
+      bathrooms: request.bathrooms || null,
+      minSize: request.minSize || null,
+      maxBudget: request.maxBudget || null,
+      features: request.features || [],
+      hasCredit: request.hasCredit,
+      creditType: request.creditType || null,
+      creditAmount: request.creditAmount || null,
+      needsFinancing: request.needsFinancing || null,
+      contactName: request.contactName,
+      contactPhone: request.contactPhone,
+      contactEmail: request.contactEmail,
+      contactTime: request.contactTime || null,
+      comments: request.comments || null,
+      createdAt: timestamp
     };
+    
     this.clientRequests.set(id, clientRequest);
     return clientRequest;
   }
@@ -87,9 +107,23 @@ export class MemStorage implements IStorage {
     const id = this.propertyListingId++;
     const timestamp = new Date().toISOString();
     const propertyListing: PropertyListing = { 
-      ...listing, 
-      id, 
-      createdAt: timestamp 
+      id,
+      propertyType: listing.propertyType,
+      transactionType: listing.transactionType,
+      price: listing.price,
+      size: listing.size,
+      alcaldia: listing.alcaldia,
+      colonia: listing.colonia,
+      street: listing.street || null,
+      bedrooms: listing.bedrooms || null,
+      bathrooms: listing.bathrooms || null,
+      features: listing.features || [],
+      agentName: listing.agentName,
+      agentPhone: listing.agentPhone,
+      agentEmail: listing.agentEmail,
+      agentCompany: listing.agentCompany || null,
+      comments: listing.comments || null,
+      createdAt: timestamp
     };
     this.propertyListings.set(id, propertyListing);
     return propertyListing;
@@ -107,10 +141,31 @@ export class MemStorage implements IStorage {
   async createAgentClientListing(listing: InsertAgentClientListing): Promise<AgentClientListing> {
     const id = this.agentClientListingId++;
     const timestamp = new Date().toISOString();
-    const agentClientListing: AgentClientListing = { 
-      ...listing, 
-      id, 
-      createdAt: timestamp 
+    const agentClientListing: AgentClientListing = {
+      id,
+      propertyType: listing.propertyType,
+      transactionType: listing.transactionType,
+      price: listing.price,
+      size: listing.size,
+      alcaldia: listing.alcaldia,
+      colonia: listing.colonia,
+      street: listing.street || null,
+      bedrooms: listing.bedrooms || null,
+      bathrooms: listing.bathrooms || null,
+      features: listing.features || [],
+      agentName: listing.agentName,
+      agentPhone: listing.agentPhone,
+      agentEmail: listing.agentEmail,
+      agentCompany: listing.agentCompany || null,
+      clientName: listing.clientName,
+      clientPhone: listing.clientPhone,
+      clientEmail: listing.clientEmail,
+      hasCredit: listing.hasCredit,
+      creditType: listing.creditType || null,
+      creditAmount: listing.creditAmount || null,
+      needsFinancing: listing.needsFinancing || null,
+      comments: listing.comments || null,
+      createdAt: timestamp
     };
     this.agentClientListings.set(id, agentClientListing);
     return agentClientListing;
