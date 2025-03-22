@@ -46,8 +46,8 @@ export default function AgentClientForm() {
     defaultValues: {
       propertyType: "",
       transactionType: "",
-      price: "",
-      size: "",
+      price: null,
+      size: null,
       alcaldia: "",
       colonia: "",
       street: "",
@@ -63,7 +63,7 @@ export default function AgentClientForm() {
       clientEmail: "",
       hasCredit: false,
       creditType: "",
-      creditAmount: "",
+      creditAmount: null,
       needsFinancing: false,
       comments: ""
     },
@@ -101,9 +101,9 @@ export default function AgentClientForm() {
     const formData = {
       ...values,
       // Asegurar que los campos numéricos sean números
-      price: values.price === "" ? 0 : Number(values.price),
-      size: values.size === "" ? 0 : Number(values.size),
-      creditAmount: values.creditAmount === "" ? null : Number(values.creditAmount),
+      price: values.price === null ? 0 : Number(values.price),
+      size: values.size === null ? 0 : Number(values.size),
+      creditAmount: values.creditAmount === null ? null : Number(values.creditAmount),
       // Asegurar que los campos opcionales sean strings vacíos o null
       street: values.street || null,
       bedrooms: values.bedrooms || null,
@@ -208,7 +208,11 @@ export default function AgentClientForm() {
                             className="pl-9"
                             type="number" 
                             placeholder="Ej: 3,500,000" 
-                            {...field} 
+                            value={field.value || ''}
+                            onChange={e => {
+                              const value = e.target.value;
+                              field.onChange(value === '' ? null : Number(value));
+                            }}
                           />
                         </div>
                       </FormControl>
@@ -230,7 +234,11 @@ export default function AgentClientForm() {
                             className="pl-9"
                             type="number" 
                             placeholder="Ej: 120" 
-                            {...field} 
+                            value={field.value || ''}
+                            onChange={e => {
+                              const value = e.target.value;
+                              field.onChange(value === '' ? null : Number(value));
+                            }}
                           />
                         </div>
                       </FormControl>
@@ -593,7 +601,11 @@ export default function AgentClientForm() {
                                 className="pl-9"
                                 type="number"
                                 placeholder="Ej: 1,000,000"
-                                {...field}
+                                value={field.value || ''}
+                                onChange={e => {
+                                  const value = e.target.value;
+                                  field.onChange(value === '' ? null : Number(value));
+                                }}
                               />
                             </div>
                           </FormControl>

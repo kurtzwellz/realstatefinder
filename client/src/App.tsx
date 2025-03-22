@@ -12,7 +12,20 @@ import Footer from "@/components/layout/footer";
 const getBasePath = () => {
   // En desarrollo usamos la ruta relativa, en producción (GitHub Pages) necesitamos
   // considerar el nombre del repositorio en la URL
-  return import.meta.env.DEV ? '' : '';
+  if (import.meta.env.DEV) {
+    return ''; // En desarrollo, no hay prefijo
+  }
+  
+  // En producción, intentamos detectar el nombre del repositorio desde la URL
+  const { pathname } = window.location;
+  // Si estamos en la raíz del dominio, no hay prefijo
+  if (pathname === '/' || pathname.match(/^\/?index\.html$/)) {
+    return '';
+  }
+  
+  // Extraer el primer segmento de la ruta como nombre del repositorio
+  const repoName = pathname.split('/')[1];
+  return repoName ? `/${repoName}` : '';
 };
 
 function Router() {
