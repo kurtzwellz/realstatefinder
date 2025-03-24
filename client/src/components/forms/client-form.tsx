@@ -71,9 +71,20 @@ export default function ClientForm() {
   
   const clientRequestMutation = useMutation({
     mutationFn: async (data: any) => {
-      // Encriptamos datos sensibles usando HTTPS
-      const response = await apiRequest("POST", "/api/client-requests", data);
-      return response.json();
+      try {
+        // Encriptamos datos sensibles usando HTTPS
+        const response = await apiRequest("POST", "/api/client-requests", data);
+        try {
+          return await response.json();
+        } catch (error) {
+          console.error("Error al parsear la respuesta JSON:", error);
+          throw new Error("Error al procesar la respuesta del servidor. Por favor, inténtalo de nuevo más tarde.");
+        }
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+        // Reenviar el error para que sea manejado por onError
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -82,10 +93,11 @@ export default function ClientForm() {
       });
       navigate("/thanks/cliente");
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      console.error("Error en la mutación:", error);
       toast({
         title: "Error al enviar el formulario",
-        description: error.message,
+        description: error.message || "Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.",
         variant: "destructive",
       });
     }

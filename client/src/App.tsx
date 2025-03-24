@@ -2,6 +2,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
+import { DemoBanner } from "@/components/ui/demo-banner";
 import Home from "@/pages/home";
 import Thanks from "@/pages/thanks";
 import NotFound from "@/pages/not-found";
@@ -44,12 +45,22 @@ function Router() {
           </Switch>
         </main>
         <Footer />
+        {/* Banner de modo demostración */}
+        <DemoBanner />
       </div>
     </WouterRouter>
   );
 }
 
-function App() {
+export default function App() {
+  // Mostrar información sobre la API configurada en la consola
+  console.log('Aplicación RealEstateFinder iniciada');
+  if (process.env.VITE_API_URL) {
+    console.log(`API URL configurada: ${process.env.VITE_API_URL}`);
+  } else {
+    console.log('API URL no configurada, usando modo demo o proxy local');
+  }
+  
   return (
     <QueryClientProvider client={queryClient}>
       <Router />
@@ -57,5 +68,3 @@ function App() {
     </QueryClientProvider>
   );
 }
-
-export default App;

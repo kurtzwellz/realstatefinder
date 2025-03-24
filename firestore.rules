@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Permitir acceso completo a las funciones de Firebase
+    match /{document=**} {
+      allow read, write: if request.auth != null && request.auth.token.firebase.sign_in_provider == 'google.com';
+      // Las funciones de Firebase tienen acceso completo a través de la autenticación administrativa
+    }
+    
+    // Colección de solicitudes de clientes
+    match /clientRequests/{document} {
+      // Permitir crear nuevas solicitudes pero no modificarlas ni eliminarlas
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+    
+    // Colección de propiedades
+    match /propertyListings/{document} {
+      // Permitir crear nuevas propiedades pero no modificarlas ni eliminarlas
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+    
+    // Colección de relaciones agente-cliente
+    match /agentClientListings/{document} {
+      // Permitir crear nuevas relaciones pero no modificarlas ni eliminarlas
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+  }
+} 

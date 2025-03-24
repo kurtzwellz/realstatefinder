@@ -1,24 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>RealEstateFinder</title>
-  <script type="text/javascript">
-    // Configuración de redirección para GitHub Pages
-    // Esto permite que las SPA funcionen con enrutamiento del lado del cliente
-    var pathSegmentsToKeep = 1;
-
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirigiendo...</title>
+  <script>
+    // Almacenar la URL actual en sessionStorage para la redirección
+    sessionStorage.redirect = location.href;
+    
+    // Redirigir a la página principal
+    const rootPath = location.pathname.split('/').slice(0, -1).join('/') || '/';
+    location.replace(rootPath);
   </script>
 </head>
 <body>
-  Redirigiendo...
+  <h1>Redirigiendo...</h1>
+  <p>Si no eres redirigido automáticamente, haz clic <a href="/">aquí</a>.</p>
 </body>
 </html> 

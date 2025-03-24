@@ -8,6 +8,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Obtener la URL de la API desde variables de entorno
+const apiUrl = process.env.VITE_API_URL || 'https://api-oe3tduq74q-uc.a.run.app';
+
 export default defineConfig({
   plugins: [
     react(),
@@ -36,9 +39,28 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: process.env.NODE_ENV === 'production' 
+          ? apiUrl  // Usar la URL de la API de Firebase configurada
+          : 'http://localhost:5000',
         changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, _res) => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            console.log('Sending Request to the Target:', req.method, req.url);
+          });
+          proxy.on('proxyRes', (proxyRes, req, _res) => {
+            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+          });
+        },
       }
     }
+  },
+  // Definir variables de entorno que estarán disponibles en el cliente
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify(apiUrl)
   }
 });
